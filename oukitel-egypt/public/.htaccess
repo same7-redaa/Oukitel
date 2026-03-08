@@ -1,0 +1,15 @@
+RewriteEngine On
+SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+
+# If the requested file or directory EXISTS on disk, serve it directly
+# (This handles JS, CSS, images, and PHP API files)
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# For Admin Panel routes, serve admin's index.html
+RewriteCond %{REQUEST_URI} ^/admin/ [NC]
+RewriteRule ^ /admin/index.html [L]
+
+# For all other URLs (React SPA routes), serve main site index.html
+RewriteRule ^ /index.html [L]
